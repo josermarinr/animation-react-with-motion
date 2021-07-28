@@ -10,22 +10,22 @@ import UseLocalStorage from './hooks/UseLocalStorage';
 function App() {
   const [id, setId] = UseLocalStorage('id')
   const [name, setName] = UseLocalStorage("nombre")
- 
+
   return (
     <div className="App">
     <Router>
       <Switch>
         <Route path="/todo">
-          {name ? <Dashboard  id={id} name={name} />: <Route path="/"/>}
-          
+          {name && <Dashboard  id={id} name={name} />}
+
         </Route>
 
         <Route path="/">
           <>
           {
-            id ? 
-              <UserLogin id={id}  onNameSubmit={setName}/> 
-            : 
+            id ?
+              <UserLogin id={id}  onNameSubmit={setName}/>
+            :
               <ProjectLogin  onIdSubmit={setId}/>
             }
           </>

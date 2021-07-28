@@ -1,26 +1,30 @@
-import {useEffect, useState} from 'react'
+import { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 
-const PREFIX = 'todo-project-' //name to idenfiy in localstorage
+const PREFIX = "todo-project-"; //name to idenfiy in localstorage
 
-export default function UseLocalStorage( key: string, initialValue?: any) {
-    const prefixedKey = PREFIX + key
-
+export default function UseLocalStorage(key: string, initialValue?: any) {
+    const prefixedKey = PREFIX + key;
+    let history = useHistory()
     const [value, setValue] = useState(() => {
-        const jsonValue = localStorage.getItem(prefixedKey)
+        const jsonValue = localStorage.getItem(prefixedKey);
 
-        if (jsonValue != null) return JSON.parse(jsonValue)
-
-        if (typeof initialValue === 'function') {
-            return initialValue()
-         } else {
-            return initialValue
+        if (jsonValue) {
+            return JSON.parse(jsonValue);
+        } else {
+            history.push('/')
         }
-  })
 
-  useEffect(() => {
-    localStorage.setItem(prefixedKey, JSON.stringify(value))
-  }, [prefixedKey, value])
+        if (typeof initialValue === "function") {
+            return initialValue();
+        } else {
+            return initialValue;
+        }
+    });
 
-  return [value, setValue]
+    useEffect(() => {
+        localStorage.setItem(prefixedKey, JSON.stringify(value));
+    }, [prefixedKey, value]);
+
+    return [value, setValue];
 }
-
